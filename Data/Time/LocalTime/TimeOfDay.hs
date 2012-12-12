@@ -33,7 +33,7 @@ data TimeOfDay = TimeOfDay {
 #if LANGUAGE_DeriveDataTypeable
 #if LANGUAGE_Rank2Types
 #if HAS_DataPico
-    ,Data, Typeable
+    ,Data
 #endif
 #endif
 #endif
@@ -41,6 +41,9 @@ data TimeOfDay = TimeOfDay {
 
 instance NFData TimeOfDay where
 	rnf (TimeOfDay h m s) = h `deepseq` m `deepseq` s `seq` () -- FIXME: Data.Fixed had no NFData instances yet at time of writing
+
+instance Typeable TimeOfDay where
+	typeOf _ = mkTyConApp (mkTyCon3 "time" "Data.Time.LocalTime.TimeOfDay" "TimeOfDay") []
 
 -- | Hour zero
 midnight :: TimeOfDay

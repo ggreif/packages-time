@@ -25,7 +25,7 @@ import Data.Data
 newtype UniversalTime = ModJulianDate {getModJulianDate :: Rational} deriving (Eq,Ord
 #if LANGUAGE_DeriveDataTypeable
 #if LANGUAGE_Rank2Types
-    ,Data, Typeable
+    ,Data
 #endif
 #endif
     )
@@ -34,6 +34,9 @@ newtype UniversalTime = ModJulianDate {getModJulianDate :: Rational} deriving (E
 instance NFData UniversalTime where
 	rnf (ModJulianDate a) = rnf a
 
+instance Typeable UniversalTime where
+	typeOf _ = mkTyConApp (mkTyCon3 "time" "Data.Time.Clock.Scale" "UniversalTime") []
+
 -- | This is a length of time, as measured by a clock.
 -- Conversion functions will treat it as seconds.
 -- It has a precision of 10^-12 s.
@@ -41,7 +44,7 @@ newtype DiffTime = MkDiffTime Pico deriving (Eq,Ord
 #if LANGUAGE_DeriveDataTypeable
 #if LANGUAGE_Rank2Types
 #if HAS_DataPico
-    ,Data, Typeable
+    ,Data
 #else
 #endif
 #endif
@@ -50,6 +53,9 @@ newtype DiffTime = MkDiffTime Pico deriving (Eq,Ord
 
 -- necessary because H98 doesn't have "cunning newtype" derivation
 instance NFData DiffTime -- FIXME: Data.Fixed had no NFData instances yet at time of writing
+
+instance Typeable DiffTime where
+	typeOf _ = mkTyConApp (mkTyCon3 "time" "Data.Time.Clock.Scale" "DiffTime") []
 
 -- necessary because H98 doesn't have "cunning newtype" derivation
 instance Enum DiffTime where

@@ -34,7 +34,7 @@ data LocalTime = LocalTime {
 #if LANGUAGE_DeriveDataTypeable
 #if LANGUAGE_Rank2Types
 #if HAS_DataPico
-    ,Data, Typeable
+    ,Data
 #endif
 #endif
 #endif
@@ -42,6 +42,9 @@ data LocalTime = LocalTime {
 
 instance NFData LocalTime where
 	rnf (LocalTime d t) = d `deepseq` t `deepseq` ()
+
+instance Typeable LocalTime where
+	typeOf _ = mkTyConApp (mkTyCon3 "time" "Data.Time.LocalTime.LocalTime" "LocalTime") []
 
 instance Show LocalTime where
 	show (LocalTime d t) = (showGregorian d) ++ " " ++ (show t)
@@ -75,13 +78,16 @@ data ZonedTime = ZonedTime {
 #if LANGUAGE_DeriveDataTypeable
 #if LANGUAGE_Rank2Types
 #if HAS_DataPico
-    deriving (Data, Typeable)
+    deriving (Data)
 #endif
 #endif
 #endif
 
 instance NFData ZonedTime where
 	rnf (ZonedTime lt z) = lt `deepseq` z `deepseq` ()
+
+instance Typeable ZonedTime where
+	typeOf _ = mkTyConApp (mkTyCon3 "time" "Data.Time.LocalTime.LocalTime" "ZonedTime") []
 
 utcToZonedTime :: TimeZone -> UTCTime -> ZonedTime
 utcToZonedTime zone time = ZonedTime (utcToLocalTime zone time) zone

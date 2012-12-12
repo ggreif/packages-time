@@ -18,13 +18,16 @@ import Data.Data
 newtype Day = ModifiedJulianDay {toModifiedJulianDay :: Integer} deriving (Eq,Ord
 #if LANGUAGE_DeriveDataTypeable
 #if LANGUAGE_Rank2Types
-    ,Data, Typeable
+    ,Data
 #endif
 #endif
     )
 
 instance NFData Day where
 	rnf (ModifiedJulianDay a) = rnf a
+
+instance Typeable Day where
+	typeOf _ = mkTyConApp (mkTyCon3 "time" "Data.Time.Calendar.Days" "Day") []
 
 -- necessary because H98 doesn't have "cunning newtype" derivation
 instance Enum Day where
