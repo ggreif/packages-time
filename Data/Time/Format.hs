@@ -156,6 +156,9 @@ formatTime locale ('%':'#':c:cs) t = (fmap toLower (formatChar c locale Nothing 
 formatTime locale ('%':c:cs) t = (formatChar c locale Nothing t) ++ (formatTime locale cs t)
 formatTime locale (c:cs) t = c:(formatTime locale cs t)
 
+{-# NOINLINE formatTime #-}
+{-# NOINLINE formatChar #-}
+
 instance FormatTime LocalTime where
 	formatCharacter 'c' = Just (\locale _ -> formatTime locale (dateTimeFmt locale))
 	formatCharacter c = case (formatCharacter c) of
